@@ -27,6 +27,14 @@ public class MethodFactory {
         return new DeviceMethod(MethodAction.RGB, new Object[] { color, effect, duration });
     }
 
+    public static DeviceMethod buildBg_BrightnessMethd(int bg_brightness, String effect, int duration) {
+        return new DeviceMethod(MethodAction.BG_BRIGHTNESS, new Object[] { bg_brightness, effect, duration });
+    }
+
+    public static DeviceMethod buildBg_RgbMethod(int bg_color, String effect, int duration) {
+        return new DeviceMethod(MethodAction.BG_RGB, new Object[] { color, effect, duration });
+    }
+
     public static DeviceMethod buildCTMethod(int colorTemperature, String effect, int duration) {
         return new DeviceMethod(MethodAction.COLORTEMPERATURE, new Object[] { colorTemperature, effect, duration });
     }
@@ -35,12 +43,24 @@ public class MethodFactory {
         return new DeviceMethod(MethodAction.HSV, new Object[] { hue, sat, effect, duration });
     }
 
+    public static DeviceMethod buildBgHsvMethod(int bg_hue, int bg_sat, String effect, int duration) {
+        return new DeviceMethod(MethodAction.BG_HSV, new Object[] { bg_hue, bg_sat, effect, duration });
+    }
+
     public static DeviceMethod buildToggle() {
         return new DeviceMethod(MethodAction.HSV, null);
     }
 
+    public static DeviceMethod buildBgToggle() {
+        return new DeviceMethod(MethodAction.BG_HSV, null);
+    }
+
     public static DeviceMethod buildSetDefault() {
         return new DeviceMethod(MethodAction.DEFAULT, null);
+    }
+
+    public static DeviceMethod buildBgSetDefault() {
+        return new DeviceMethod(MethodAction.BG_DEFAULT, null);
     }
 
     public static DeviceMethod buildStartCF(int count, int endAction, ColorFlowItem[] items) {
@@ -168,6 +188,8 @@ public class MethodFactory {
                         new Object[] { "power", "name", "bright", "ct", "rgb", "hue", "sat" });
             case desklamp:
                 return new DeviceMethod(MethodAction.PROP, new Object[] { "power", "name", "bright", "ct" });
+            case ceiling10:
+                return new DeviceMethod(MethodAction.PROP, new Object[] { "power", "name", "bright", "ct", "bg_power", "bg_bright", "bg_ct", "bg_rgb", "bg_hue", "bg_sat" });
             default:
                 return null;
         }

@@ -43,6 +43,8 @@ public class DeviceMethod {
     public static final String ADJUST_PROP_BRIGHT = "bright";
     public static final String ADJUST_PROP_CT = "ct";
     public static final String ADJUST_PROP_COLOR = "color";
+    public static final String ADJUST_PROP_BG_COLOR = "bg_color";
+    public static final String ADJUST_PROP_BG_BRIGHT = "bg_bright";
 
     public static final int MUSIC_ACTION_ON = 1;
     public static final int MUSIC_ACTION_OFF = 0;

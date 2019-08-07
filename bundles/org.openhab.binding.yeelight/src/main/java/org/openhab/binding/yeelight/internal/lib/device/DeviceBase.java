@@ -95,14 +95,27 @@ public abstract class DeviceBase {
                                 mDeviceStatus.setPowerOff(true);
                             } else if (prop.getValue().toString().equals("\"on\"")) {
                                 mDeviceStatus.setPowerOff(false);
-                            }
+                        }else if (prop.getKey().equals("bg_power")) {
+                                updateProp += " bg_power";
+                                if (prop.getValue().toString().equals("\"off\"")) {
+                                    mDeviceStatus.setBg_PowerOff(true);
+                                } else if (prop.getValue().toString().equals("\"on\"")) {
+                                    mDeviceStatus.seBgtPowerOff(false);
+                                }
                         } else if (prop.getKey().equals("bright")) {
                             updateProp += " bright";
                             mDeviceStatus.setBrightness(prop.getValue().getAsInt());
+                        } else if (prop.getKey().equals("bg_bright")) {
+                            updateProp += " bg_bright";
+                            mDeviceStatus.setBg_Brightness(prop.getValue().getAsInt());
                         } else if (prop.getKey().equals("ct")) {
                             updateProp += " ct";
                             mDeviceStatus.setCt(prop.getValue().getAsInt());
                             mDeviceStatus.setMode(DeviceMode.MODE_SUNHINE);
+                        } else if (prop.getKey().equals("bg_ct")) {
+                            updateProp += " bg_ct";
+                            mDeviceStatus.setBg_Ct(prop.getValue().getAsInt());
+                            mDeviceStatus.setBg_Mode(DeviceMode.MODE_SUNHINE);
                         } else if (prop.getKey().equals("rgb")) {
                             updateProp += " rgb";
                             mDeviceStatus.setMode(DeviceMode.MODE_COLOR);
@@ -111,14 +124,30 @@ public abstract class DeviceBase {
                             mDeviceStatus.setR((color >> 16) & 0xFF);
                             mDeviceStatus.setG((color >> 8) & 0xFF);
                             mDeviceStatus.setB(color & 0xFF);
+                        } else if (prop.getKey().equals("bg_rgb")) {
+                            updateProp += " bg_rgb";
+                            mDeviceStatus.setBg_Mode(DeviceMode.MODE_COLOR);
+                            int color = prop.getValue().getAsInt();
+                            mDeviceStatus.setBg_Color(color);
+                            mDeviceStatus.setBg_R((color >> 16) & 0xFF);
+                            mDeviceStatus.setBg_G((color >> 8) & 0xFF);
+                            mDeviceStatus.setBg_B(color & 0xFF);
                         } else if (prop.getKey().equals("hue")) {
                             updateProp += " hue";
                             mDeviceStatus.setMode(DeviceMode.MODE_HSV);
                             mDeviceStatus.setHue(prop.getValue().getAsInt());
+                        } else if (prop.getKey().equals("bg_hue")) {
+                            updateProp += " bg_hue";
+                            mDeviceStatus.setBg_Mode(DeviceMode.MODE_HSV);
+                            mDeviceStatus.setBg_Hue(prop.getValue().getAsInt());
                         } else if (prop.getKey().equals("sat")) {
                             updateProp += " sat";
                             mDeviceStatus.setMode(DeviceMode.MODE_HSV);
                             mDeviceStatus.setSat(prop.getValue().getAsInt());
+                        } else if (prop.getKey().equals("bg_sat")) {
+                            updateProp += " bg_sat";
+                            mDeviceStatus.setBg_Mode(DeviceMode.MODE_HSV);
+                            mDeviceStatus.setBgSat(prop.getValue().getAsInt());
                         } else if (prop.getKey().equals("color_mode")) {
                             updateProp += " color_mode";
                             switch (prop.getValue().getAsInt()) {
@@ -134,9 +163,27 @@ public abstract class DeviceBase {
                                 default:
                                     break;
                             }
+                        } else if (prop.getKey().equals("bg_color_mode")) {
+                            updateProp += " bg_color_mode";
+                            switch (prop.getValue().getAsInt()) {
+                                case DeviceStatus.MODE_COLOR:
+                                    mDeviceStatus.setBg_Mode(DeviceMode.MODE_COLOR);
+                                    break;
+                                case DeviceStatus.MODE_COLORTEMPERATURE:
+                                    mDeviceStatus.setBg_Mode(DeviceMode.MODE_SUNHINE);
+                                    break;
+                                case DeviceStatus.MODE_HSV:
+                                    mDeviceStatus.setBg_Mode(DeviceMode.MODE_HSV);
+                                    break;
+                                default:
+                                    break;
+                            }
                         } else if (prop.getKey().equals("flowing")) {
                             updateProp += " flowing";
                             mDeviceStatus.setIsFlowing(prop.getValue().getAsInt() == 1);
+                        } else if (prop.getKey().equals("bg_flowing")) {
+                            updateProp += " bg_flowing";
+                            mDeviceStatus.setBg_IsFlowing(prop.getValue().getAsInt() == 1);
                         } else if (prop.getKey().equals("flow_params")) {
                             updateProp += " flow_params";
                             // {"method":"props","params":{"flow_params":"0,0,1000,1,15935488,31,1000,1,13366016,31,1000,1,62370,31,1000,1,7995635,31"}}
@@ -157,6 +204,26 @@ public abstract class DeviceBase {
                                     mDeviceStatus.getFlowItems().add(item);
                                 }
                             }
+                        } else if (prop.getKey().equals("bg_flow_params")) {
+                            updateProp += " bg_flow_params";
+                            // {"method":"props","params":{"flow_params":"0,0,1000,1,15935488,31,1000,1,13366016,31,1000,1,62370,31,1000,1,7995635,31"}}
+                            String[] flowStrs = prop.getValue().toString().replace("\"", "").split(",");
+                            if (flowStrs.length > 2 && (flowStrs.length - 2) % 4 == 0) {
+                                mDeviceStatus.setBg_FlowCount(Integer.parseInt(flowStrs[0]));
+                                mDeviceStatus.setBg_FlowEndAction(Integer.parseInt(flowStrs[1]));
+                                if (mDeviceStatus.getBg_FlowItems() == null) {
+                                    mDeviceStatus.setBg_FlowItems(new ArrayList<>());
+                                }
+                                mDeviceStatus.getBg_FlowItems().clear();
+                                for (int i = 0; i < ((flowStrs.length - 2) / 4); i++) {
+                                    ColorFlowItem item = new ColorFlowItem();
+                                    item.duration = Integer.valueOf(flowStrs[4 * i + 2]);
+                                    item.mode = Integer.valueOf(flowStrs[4 * i + 3]);
+                                    item.value = Integer.valueOf(flowStrs[4 * i + 4]);
+                                    item.brightness = Integer.valueOf(flowStrs[4 * i + 5]);
+                                    mDeviceStatus.getBg_FlowItems().add(item);
+                                }
+                            }
                         } else if (prop.getKey().equals("delayoff")) {
                             updateProp += " delayoff";
                             int delayOff = prop.getValue().getAsInt();
@@ -164,6 +231,14 @@ public abstract class DeviceBase {
                                 mDeviceStatus.setDelayOff(delayOff);
                             } else {
                                 mDeviceStatus.setDelayOff(DeviceStatus.DEFAULT_NO_DELAY);
+                            }
+                        } else if (prop.getKey().equals("bg_delayoff")) {
+                            updateProp += " bg_delayoff";
+                            int delayOff = prop.getValue().getAsInt();
+                            if (delayOff > 0 && delayOff <= 60) {
+                                mDeviceStatus.setBg_DelayOff(delayOff);
+                            } else {
+                                mDeviceStatus.setBg_DelayOff(DeviceStatus.DEFAULT_NO_DELAY);
                             }
                         } else if (prop.getKey().equals("music_on")) {
                             updateProp += " music_on";
@@ -205,12 +280,31 @@ public abstract class DeviceBase {
                 new DeviceMethod(MethodAction.SWITCH, new Object[] { "off", DeviceMethod.EFFECT_SMOOTH, duration }));
     }
 
+    public void bgopen(int duration) {
+        mConnection.invoke(
+                new DeviceMethod(MethodAction.BG_SWITCH, new Object[] { "on", DeviceMethod.EFFECT_SMOOTH, duration }));
+    }
+
+    public void bgclose(int duration) {
+        mConnection.invoke(
+                new DeviceMethod(MethodAction.BG_SWITCH, new Object[] { "off", DeviceMethod.EFFECT_SMOOTH, duration }));
+    }
+
     public void decreaseBrightness(int duration) {
         int bright = getDeviceStatus().getBrightness() - 10;
         if (bright <= 0) {
             close(duration);
         } else {
             setBrightness(bright, duration);
+        }
+    }
+
+    public void decreaseBg_Brightness(int duration) {
+        int bg_bright = getDeviceStatus().getBg_Brightness() - 10;
+        if (bg_bright <= 0) {
+            bgclose(duration);
+        } else {
+            setBg_Brightness(bg_bright, duration);
         }
     }
 
@@ -222,12 +316,28 @@ public abstract class DeviceBase {
         setBrightness(bright, duration);
     }
 
+    public void increaseBg_Brightness(int duration) {
+        int bg_bright = getDeviceStatus().getBg_Brightness() + 10;
+        if (bg_bright > 100) {
+            bg_bright = 100;
+        }
+        setBg_Brightness(bg_bright, duration);
+    }
+
     public void setBrightness(int brightness, int duration) {
         mConnection.invoke(MethodFactory.buildBrightnessMethd(brightness, DeviceMethod.EFFECT_SMOOTH, duration));
     }
 
     public void setColor(int color, int duration) {
         mConnection.invoke(MethodFactory.buildRgbMethod(color, DeviceMethod.EFFECT_SMOOTH, duration));
+    }
+
+    public void setBg_Brightness(int bg_brightness, int duration) {
+        mConnection.invoke(MethodFactory.buildBrightnessMethd(bg_brightness, DeviceMethod.EFFECT_SMOOTH, duration));
+    }
+
+    public void setBgolor(int bg_color, int duration) {
+        mConnection.invoke(MethodFactory.buildRgbMethod(bg_color, DeviceMethod.EFFECT_SMOOTH, duration));
     }
 
     public void increaseCt(int duration) {

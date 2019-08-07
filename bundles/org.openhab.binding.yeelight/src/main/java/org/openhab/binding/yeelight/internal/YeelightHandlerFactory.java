@@ -45,6 +45,7 @@ public class YeelightHandlerFactory extends BaseThingHandlerFactory {
         SUPPORTED_THING_TYPES_UIDS.add(THING_TYPE_WONDER);
         SUPPORTED_THING_TYPES_UIDS.add(THING_TYPE_STRIPE);
         SUPPORTED_THING_TYPES_UIDS.add(THING_TYPE_DESKLAMP);
+        SUPPORTED_THING_TYPES_UIDS.add(THING_TYPE_CEILING10);
     }
 
     @Override

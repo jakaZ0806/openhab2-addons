@@ -19,13 +19,22 @@ package org.openhab.binding.yeelight.internal.lib.enums;
 public enum DeviceAction {
     open,
     close,
+    bg_open,
+    bg_close,
     brightness,
+    bg_brightness,
     color,
+    bg_color,
     colortemperature,
+    bg_colortemperature
     increase_bright,
+    increase_bg_bright,
     decrease_bright,
+    decrease_bg_bright,
     increase_ct,
+    increase_bg_ct,
     decrease_ct;
+    decrease_bg_ct;
 
     private String mStrValue;
     private int mIntValue;

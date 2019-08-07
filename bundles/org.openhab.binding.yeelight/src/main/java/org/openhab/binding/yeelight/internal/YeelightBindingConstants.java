@@ -29,11 +29,14 @@ public class YeelightBindingConstants {
     public static final ThingTypeUID THING_TYPE_CEILING = new ThingTypeUID(BINDING_ID, "ceiling");
     public static final ThingTypeUID THING_TYPE_CEILING1 = new ThingTypeUID(BINDING_ID, "ceiling1");
     public static final ThingTypeUID THING_TYPE_CEILING3 = new ThingTypeUID(BINDING_ID, "ceiling3");
+    public static final ThingTypeUID THING_TYPE_CEILING10 = new ThingTypeUID(BINDING_ID, "ceiling10");
     public static final ThingTypeUID THING_TYPE_DOLPHIN = new ThingTypeUID(BINDING_ID, "dolphin");
     public static final ThingTypeUID THING_TYPE_CTBULB = new ThingTypeUID(BINDING_ID, "ct_bulb");
     public static final ThingTypeUID THING_TYPE_WONDER = new ThingTypeUID(BINDING_ID, "wonder");
     public static final ThingTypeUID THING_TYPE_STRIPE = new ThingTypeUID(BINDING_ID, "stripe");
     public static final ThingTypeUID THING_TYPE_DESKLAMP = new ThingTypeUID(BINDING_ID, "desklamp");
+
+
 
     // List of thing Parameters names
     public static final String PARAMETER_DEVICE_ID = "deviceId";
@@ -43,6 +46,8 @@ public class YeelightBindingConstants {
     public static final String CHANNEL_BRIGHTNESS = "brightness";
     public static final String CHANNEL_COLOR = "color";
     public static final String CHANNEL_COLOR_TEMPERATURE = "colorTemperature";
+    public static final String CHANNEL_BG_BRIGHTNESS = "bg_brightness"
+    public static final String CHANNEL_BG_COLOR = "bg_color"
     public static final String CHANNEL_COMMAND = "command";
 
     // Constants used

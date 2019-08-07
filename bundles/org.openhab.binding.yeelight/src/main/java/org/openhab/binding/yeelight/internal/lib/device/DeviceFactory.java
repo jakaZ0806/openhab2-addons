@@ -48,6 +48,8 @@ public class DeviceFactory {
                 return new PitayaDevice(id);
             case desklamp:
                 return new DesklampDevice(id);
+            case ceiling10:
+                return new MeteoriteDevice(id);
             default:
                 return null;
         }
@@ -80,6 +82,9 @@ public class DeviceFactory {
                 break;
             case desklamp:
                 device = new DesklampDevice(bulbInfo.get("id"));
+                break;
+            case ceiling10:
+                device = new MeteoriteDevice(bulbInfo.get("id"));
                 break;
             default:
                 return null;

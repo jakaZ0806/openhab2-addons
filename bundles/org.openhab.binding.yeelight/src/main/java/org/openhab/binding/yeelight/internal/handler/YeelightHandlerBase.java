@@ -94,6 +94,8 @@ public abstract class YeelightHandlerBase extends BaseThingHandler
             return DeviceType.stripe;
         } else if (typeUID.equals(THING_TYPE_DESKLAMP)) {
             return DeviceType.desklamp;
+        } else if (typeUID.equals(THING_TYPE_CEILING10)) {
+            return DeviceType.ceiling10;
         } else {
             return null;
         }
@@ -149,12 +151,21 @@ public abstract class YeelightHandlerBase extends BaseThingHandler
                 case CHANNEL_BRIGHTNESS:
                     updateState(channelUID, new PercentType(s.getBrightness()));
                     break;
+                case CHANNEL_BG_BRIGHTNESS:
+                    updateState(channelUID, new PercentType(s.getBg_Brightness()));
+                    break;
                 case CHANNEL_COLOR:
                     HSBType hsb = new HSBType();
                     updateState(channelUID, HSBType.fromRGB(s.getR(), s.getG(), s.getB()));
                     break;
                 case CHANNEL_COLOR_TEMPERATURE:
                     updateState(channelUID, new PercentType(s.getCt()));
+                    break;
+                case CHANNEL_BG_COLOR_TEMPERATURE:
+                    updateState(channelUID, new PercentType(s.getBg_Ct()));
+                    break;
+                case CHANNEL_BG_COLOR:
+                    updateState(channelUID, HSBType.fromRGB(s.getBg_R(), s.getBg_G(), s.getBg_B()));
                     break;
                 default:
                     break;
@@ -169,6 +180,15 @@ public abstract class YeelightHandlerBase extends BaseThingHandler
                     handleOnOffCommand((OnOffType) command);
                 } else if (command instanceof IncreaseDecreaseType) {
                     handleIncreaseDecreaseBrightnessCommand((IncreaseDecreaseType) command);
+                }
+                break;
+            case CHANNEL_BG_BRIGHTNESS:
+                if (command instanceof PercentType) {
+                    handleBgPercentMessage((PercentType) command);
+                } else if (command instanceof OnOffType) {
+                    handleBgOnOffCommand((OnOffType) command);
+                } else if (command instanceof IncreaseDecreaseType) {
+                    handleIncreaseDecreaseBg_BrightnessCommand((IncreaseDecreaseType) command);
                 }
                 break;
             case CHANNEL_COLOR:
@@ -187,7 +207,30 @@ public abstract class YeelightHandlerBase extends BaseThingHandler
                     handleIncreaseDecreaseBrightnessCommand((IncreaseDecreaseType) command);
                 }
                 break;
+             case CHANNEL_BG_COLOR:
+                if (command instanceof HSBType) {
+                    HSBType hsbCommand = (HSBType) command;
+                    if (hsbCommand.getBrightness().intValue() == 0) {
+                        handleOnOffCommand(OnOffType.OFF);
+                    } else {
+                        handleHSBCommand(hsbCommand);
+                    }
+                } else if (command instanceof PercentType) {
+                    handlePercentMessage((PercentType) command);
+                } else if (command instanceof OnOffType) {
+                    handleOnOffCommand((OnOffType) command);
+                } else if (command instanceof IncreaseDecreaseType) {
+                    handleIncreaseDecreaseBrightnessCommand((IncreaseDecreaseType) command);
+                }
+                break;
             case CHANNEL_COLOR_TEMPERATURE:
+                if (command instanceof PercentType) {
+                    handleColorTemperatureCommand((PercentType) command);
+                } else if (command instanceof IncreaseDecreaseType) {
+                    handleIncreaseDecreaseBrightnessCommand((IncreaseDecreaseType) command);
+                }
+                break;
+            case CHANNEL_BG_COLOR_TEMPERATURE:
                 if (command instanceof PercentType) {
                     handleColorTemperatureCommand((PercentType) command);
                 } else if (command instanceof IncreaseDecreaseType) {
@@ -219,6 +262,26 @@ public abstract class YeelightHandlerBase extends BaseThingHandler
             DeviceManager.getInstance().doAction(deviceId, pAction);
         } else {
             if (mDevice.getDeviceStatus().isPowerOff()) {
+                pAction = DeviceAction.open;
+                // hard coded to fast open, the duration should apply to brightness increase only
+                pAction.putDuration(0);
+                DeviceManager.getInstance().doAction(deviceId, pAction);
+            }
+            pAction = DeviceAction.brightness;
+            pAction.putValue(brightness.intValue());
+            pAction.putDuration(getDuration());
+            DeviceManager.getInstance().doAction(deviceId, pAction);
+        }
+    }
+
+    void handleBgPercentMessage(PercentType brightness) {
+        DeviceAction pAction;
+        if (brightness.intValue() == 0) {
+            pAction = DeviceAction.close;
+            pAction.putDuration(getDuration());
+            DeviceManager.getInstance().doAction(deviceId, pAction);
+        } else {
+            if (mDevice.getDeviceStatus().bg_isPowerOff()) {
                 pAction = DeviceAction.open;
                 // hard coded to fast open, the duration should apply to brightness increase only
                 pAction.putDuration(0);
@@ -289,6 +352,22 @@ public abstract class YeelightHandlerBase extends BaseThingHandler
         logger.debug("Update CT->{}", status.getCt());
         updateState(CHANNEL_COLOR_TEMPERATURE,
                 new PercentType((status.getCt() - COLOR_TEMPERATURE_MINIMUM) / COLOR_TEMPERATURE_STEP));
+    }
+
+    void updateBg_BrightnessAndColorUI(DeviceStatus status) {
+        PercentType brightness = status.bg_isPowerOff() ? PercentType.ZERO : new PercentType(status.getBg_Brightness());
+
+        HSBType tempHsbType = HSBType.fromRGB(status.getBg_R(), status.getBg_G(), status.getBg_B());
+        HSBType hsbType = status.getBg_Mode() == DeviceMode.MODE_HSV
+                ? new HSBType(new DecimalType(status.getBg_Hue()), new PercentType(status.getBgSat()), brightness)
+                : new HSBType(tempHsbType.getHue(), tempHsbType.getSaturation(), brightness);
+
+        logger.debug("Update Color->{}", hsbType);
+        updateState(CHANNEL_BG_COLOR, hsbType);
+
+        logger.debug("Update CT->{}", status.getBg_Ct());
+        updateState(CHANNEL_BG_COLOR_TEMPERATURE,
+                new PercentType((status.getBg_Ct() - COLOR_TEMPERATURE_MINIMUM) / COLOR_TEMPERATURE_STEP));
     }
 
     int getDuration() {

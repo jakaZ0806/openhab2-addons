@@ -100,6 +100,8 @@ public class YeelightDiscoveryService extends AbstractDiscoveryService implement
                 return new ThingUID(YeelightBindingConstants.THING_TYPE_STRIPE, device.getDeviceId());
             case desklamp:
                 return new ThingUID(YeelightBindingConstants.THING_TYPE_DESKLAMP, device.getDeviceId());
+            case ceiling10:
+                return new ThingUID(YeelightBindingConstants.THING_TYPE_CEILING10, device.getDeviceId());
             default:
                 return null;
         }
@@ -123,6 +125,8 @@ public class YeelightDiscoveryService extends AbstractDiscoveryService implement
                 return YeelightBindingConstants.THING_TYPE_STRIPE;
             case desklamp:
                 return YeelightBindingConstants.THING_TYPE_DESKLAMP;
+            case ceiling10:
+                return YeelightBindingConstants.THING_TYPE_CEILING10;
             default:
                 return null;
         }

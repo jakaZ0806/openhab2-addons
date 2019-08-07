@@ -213,26 +213,53 @@ public class DeviceManager {
                 case close:
                     device.close(action.intDuration());
                     break;
+                case open:
+                    device.bgopen(action.intDuration());
+                    break;
+                case close:
+                    device.bgclose(action.intDuration());
+                    break;
                 case brightness:
                     device.setBrightness(action.intValue(), action.intDuration());
+                    break;
+                case bg_brightness:
+                    device.setBg_Brightness(action.intValue(), action.intDuration());
                     break;
                 case color:
                     device.setColor(action.intValue(), action.intDuration());
                     break;
+                case bg_color:
+                    device.setBg_Color(action.intValue(), action.intDuration());
+                    break;
                 case colortemperature:
                     device.setCT(action.intValue(), action.intDuration());
+                    break;
+                case bg_colortemperature:
+                    device.setBg_Ct(action.intValue(), action.intDuration());
                     break;
                 case increase_bright:
                     device.increaseBrightness(action.intDuration());
                     break;
+                case increase_bg_bright:
+                    device.increaseBg_Brightness(action.intDuration());
+                    break;
                 case decrease_bright:
                     device.decreaseBrightness(action.intDuration());
+                    break;
+                case decrease_bg_bright:
+                    device.decreaseBg_Brightness(action.intDuration());
                     break;
                 case increase_ct:
                     device.increaseCt(action.intDuration());
                     break;
                 case decrease_ct:
                     device.decreaseCt(action.intDuration());
+                    break;
+                case increase_bg_ct:
+                    device.increaseBgCt(action.intDuration());
+                    break;
+                case decrease_bg_ct:
+                    device.decreaseBgCt(action.intDuration());
                     break;
                 default:
                     break;
@@ -255,13 +282,20 @@ public class DeviceManager {
         device.setPort(Integer.parseInt(addressInfo[2]));
         device.setOnline(true);
         Color color = new Color(Integer.parseInt(bulbInfo.get("rgb")));
+        Color bg_color = new Color(Integer.parseInt(bulbInfo.get("bg_rgb")));
         DeviceStatus status = device.getDeviceStatus();
         status.setR(color.getRed());
         status.setG(color.getGreen());
         status.setB(color.getBlue());
+        status.setBg_R(bg_color.getRed());
+        status.setBg_G(bg_color.getGreen());
+        status.setBg_B(bg_color.getBlue());
         status.setCt(Integer.parseInt(bulbInfo.get("ct")));
+        status.setBg_Ct(Integer.parseInt(bulbInfo.get("bg_ct")));
         status.setHue(Integer.parseInt(bulbInfo.get("hue")));
         status.setSat(Integer.parseInt(bulbInfo.get("sat")));
+        status.setBg_Hue(Integer.parseInt(bulbInfo.get("bg_hue")));
+        status.setBgSat(Integer.parseInt(bulbInfo.get("bg_sat")));
     }
 
     public static String getDefaultName(DeviceBase device) {
@@ -283,6 +317,8 @@ public class DeviceManager {
                 return "Yeelight Color LED Stripe";
             case desklamp:
                 return "Yeelight Mi LED Desk Lamp";
+            case ceiling10:
+                return "Yeelight Meteorite";
             default:
                 return "";
         }

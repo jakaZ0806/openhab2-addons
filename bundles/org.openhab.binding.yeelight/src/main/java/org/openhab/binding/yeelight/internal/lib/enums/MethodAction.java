@@ -19,15 +19,25 @@ public enum MethodAction {
 
     PROP("get_prop"),
     SWITCH("set_power"),
+    BG_SWITCH("bg_set_power")
     TOGGLE("toggle"),
+    BG_TOGGLE("bg_toggle")
     BRIGHTNESS("set_bright"),
+    BG_BRIGHTNESS("bg_set_bright")
     COLORTEMPERATURE("set_ct_abx"),
+    BG_COLORTEMPERATURE("bg_set_ct_abx"),
     HSV("set_hsv"),
+    BG_HSV("bg_set_hsv"),
     RGB("set_rgb"),
+    BG_RGB("bg_set_rgb"),
     DEFAULT("set_default"),
+    BG_DEFAULT("bg_set_default"),
     STARTCF("start_cf"),
     STOPCF("setop_cf"),
+    BG_STARTCF("bg_start_cf"),
+    BG_STOPCF("bg_setop_cf"),
     SCENE("set_scene"),
+    BG_SCENE("bg_set_scene"),
     CRON_ADD("cron_add"),
     CRON_GET("cron_get"),
     CRON_DEL("cron_del"),
