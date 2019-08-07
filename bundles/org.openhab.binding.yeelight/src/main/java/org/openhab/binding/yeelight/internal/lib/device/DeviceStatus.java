@@ -132,11 +132,11 @@ public class DeviceStatus {
         this.bg_hue = bg_hue;
     }
 
-    public int getBgSat() {
+    public int getBg_Sat() {
         return sat;
     }
 
-    public void setBgSat(int sat) {
+    public void setBg_Sat(int sat) {
         this.sat = sat;
     }
 
@@ -291,7 +291,7 @@ public class DeviceStatus {
                 + isFlowing + ", delayOff=" + delayOff + ", mFlowItems=" + mFlowItems + ", mode=" + mode
                 + ", isMusicOn=" + isMusicOn + ", name=" + name + ", bg_isPowerOff=" + bg_isPowerOff + ", bg_r=" + bg_r
                 + ", bg_g=" + bg_g + ", bg_b=" + bg_b + ", bg_color=" + bg_color + ", bg_brightness=" + bg_brightness
-                + ", bg_hue=" + bg_hue + ", bg_sat" + bg_sat + ", bg_mode" + bg_mode + "]";
+                + ", bg_hue=" + bg_hue + ", bg_sat=" + bg_sat + ", bg_mode=" + bg_mode + "]";
     }
 
     public int getFlowCount() {

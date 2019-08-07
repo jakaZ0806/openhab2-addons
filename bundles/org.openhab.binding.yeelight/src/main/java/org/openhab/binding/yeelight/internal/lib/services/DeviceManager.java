@@ -213,10 +213,10 @@ public class DeviceManager {
                 case close:
                     device.close(action.intDuration());
                     break;
-                case open:
+                case bg_open:
                     device.bgopen(action.intDuration());
                     break;
-                case close:
+                case bg_close:
                     device.bgclose(action.intDuration());
                     break;
                 case brightness:
@@ -235,7 +235,7 @@ public class DeviceManager {
                     device.setCT(action.intValue(), action.intDuration());
                     break;
                 case bg_colortemperature:
-                    device.setBg_Ct(action.intValue(), action.intDuration());
+                    device.setBg_CT(action.intValue(), action.intDuration());
                     break;
                 case increase_bright:
                     device.increaseBrightness(action.intDuration());
@@ -256,10 +256,10 @@ public class DeviceManager {
                     device.decreaseCt(action.intDuration());
                     break;
                 case increase_bg_ct:
-                    device.increaseBgCt(action.intDuration());
+                    device.increaseBg_Ct(action.intDuration());
                     break;
                 case decrease_bg_ct:
-                    device.decreaseBgCt(action.intDuration());
+                    device.decreaseBg_Ct(action.intDuration());
                     break;
                 default:
                     break;
@@ -295,7 +295,9 @@ public class DeviceManager {
         status.setHue(Integer.parseInt(bulbInfo.get("hue")));
         status.setSat(Integer.parseInt(bulbInfo.get("sat")));
         status.setBg_Hue(Integer.parseInt(bulbInfo.get("bg_hue")));
-        status.setBgSat(Integer.parseInt(bulbInfo.get("bg_sat")));
+        status.setBg_Sat(Integer.parseInt(bulbInfo.get("bg_sat")));
+        status.setBg_Brightness(Integer.parseInt(bulbInfo.get("bg_bright")));
+        status.setBrightness(Integer.parseInt(bulbInfo.get("bright")));
     }
 
     public static String getDefaultName(DeviceBase device) {

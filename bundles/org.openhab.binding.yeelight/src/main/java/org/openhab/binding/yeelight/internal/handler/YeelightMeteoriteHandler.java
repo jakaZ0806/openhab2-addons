@@ -27,7 +27,7 @@ import org.openhab.binding.yeelight.internal.lib.device.DeviceStatus;
  *
  * @author Lukas Kugler - Adapted Ceiling Implementation to new Light
  */
-public class YeelighMeteoriteHandler extends YeelightHandlerBase {
+public class YeelightMeteoriteHandler extends YeelightHandlerBase {
 
     public YeelightMeteoriteHandler(Thing thing) {
         super(thing);
@@ -48,5 +48,6 @@ public class YeelighMeteoriteHandler extends YeelightHandlerBase {
             updateState(YeelightBindingConstants.CHANNEL_COLOR_TEMPERATURE,
                     new PercentType((status.getCt() - COLOR_TEMPERATURE_MINIMUM) / COLOR_TEMPERATURE_STEP));
         }
+        updateBg_BrightnessAndColorUI(status);
     }
 }

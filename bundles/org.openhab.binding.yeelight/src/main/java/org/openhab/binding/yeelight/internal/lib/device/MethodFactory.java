@@ -32,11 +32,15 @@ public class MethodFactory {
     }
 
     public static DeviceMethod buildBg_RgbMethod(int bg_color, String effect, int duration) {
-        return new DeviceMethod(MethodAction.BG_RGB, new Object[] { color, effect, duration });
+        return new DeviceMethod(MethodAction.BG_RGB, new Object[] { bg_color, effect, duration });
     }
 
     public static DeviceMethod buildCTMethod(int colorTemperature, String effect, int duration) {
         return new DeviceMethod(MethodAction.COLORTEMPERATURE, new Object[] { colorTemperature, effect, duration });
+    }
+
+    public static DeviceMethod buildBgCTMethod(int bg_colorTemperature, String effect, int duration) {
+        return new DeviceMethod(MethodAction.BG_COLORTEMPERATURE, new Object[] { bg_colorTemperature, effect, duration });
     }
 
     public static DeviceMethod buildHsvMethod(int hue, int sat, String effect, int duration) {

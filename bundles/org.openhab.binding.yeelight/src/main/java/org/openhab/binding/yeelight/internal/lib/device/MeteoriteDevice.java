@@ -83,7 +83,7 @@ public class MeteoriteDevice extends DeviceBase {
                     mDeviceStatus.setBg_B(color & 0xFF);
                     mDeviceStatus.setBg_Color(color);
                     mDeviceStatus.setBg_Hue(status.get(8).getAsInt());
-                    mDeviceStatus.setBgSat(status.get(9).getAsInt());
+                    mDeviceStatus.setBg_Sat(status.get(9).getAsInt());
                 }
             }
         } catch (Exception e) {

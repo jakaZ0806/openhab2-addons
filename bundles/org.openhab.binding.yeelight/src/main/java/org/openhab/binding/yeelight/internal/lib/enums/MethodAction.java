@@ -19,11 +19,11 @@ public enum MethodAction {
 
     PROP("get_prop"),
     SWITCH("set_power"),
-    BG_SWITCH("bg_set_power")
+    BG_SWITCH("bg_set_power"),
     TOGGLE("toggle"),
-    BG_TOGGLE("bg_toggle")
+    BG_TOGGLE("bg_toggle"),
     BRIGHTNESS("set_bright"),
-    BG_BRIGHTNESS("bg_set_bright")
+    BG_BRIGHTNESS("bg_set_bright"),
     COLORTEMPERATURE("set_ct_abx"),
     BG_COLORTEMPERATURE("bg_set_ct_abx"),
     HSV("set_hsv"),

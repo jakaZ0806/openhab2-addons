@@ -24,6 +24,7 @@ import org.eclipse.smarthome.core.thing.binding.ThingHandler;
 import org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory;
 import org.openhab.binding.yeelight.internal.handler.YeelightCeilingHandler;
 import org.openhab.binding.yeelight.internal.handler.YeelightColorHandler;
+import org.openhab.binding.yeelight.internal.handler.YeelightMeteoriteHandler;
 import org.openhab.binding.yeelight.internal.handler.YeelightStripeHandler;
 import org.openhab.binding.yeelight.internal.handler.YeelightWhiteHandler;
 import org.osgi.service.component.annotations.Component;
@@ -66,6 +67,8 @@ public class YeelightHandlerFactory extends BaseThingHandlerFactory {
         } else if (thingTypeUID.equals(THING_TYPE_CEILING) || thingTypeUID.equals(THING_TYPE_CEILING1)
                 || thingTypeUID.equals(THING_TYPE_CEILING3) || thingTypeUID.equals(THING_TYPE_DESKLAMP)) {
             return new YeelightCeilingHandler(thing);
+        } else if (thingTypeUID.equals(THING_TYPE_CEILING10)) {
+            return new YeelightMeteoriteHandler(thing);
         } else {
             return null;
         }

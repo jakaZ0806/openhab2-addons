@@ -95,13 +95,14 @@ public abstract class DeviceBase {
                                 mDeviceStatus.setPowerOff(true);
                             } else if (prop.getValue().toString().equals("\"on\"")) {
                                 mDeviceStatus.setPowerOff(false);
-                        }else if (prop.getKey().equals("bg_power")) {
+                            }
+                        } else if (prop.getKey().equals("bg_power")) {
                                 updateProp += " bg_power";
                                 if (prop.getValue().toString().equals("\"off\"")) {
                                     mDeviceStatus.setBg_PowerOff(true);
                                 } else if (prop.getValue().toString().equals("\"on\"")) {
-                                    mDeviceStatus.seBgtPowerOff(false);
-                                }
+                                    mDeviceStatus.setBg_PowerOff(false);
+                            }
                         } else if (prop.getKey().equals("bright")) {
                             updateProp += " bright";
                             mDeviceStatus.setBrightness(prop.getValue().getAsInt());
@@ -147,7 +148,7 @@ public abstract class DeviceBase {
                         } else if (prop.getKey().equals("bg_sat")) {
                             updateProp += " bg_sat";
                             mDeviceStatus.setBg_Mode(DeviceMode.MODE_HSV);
-                            mDeviceStatus.setBgSat(prop.getValue().getAsInt());
+                            mDeviceStatus.setBg_Sat(prop.getValue().getAsInt());
                         } else if (prop.getKey().equals("color_mode")) {
                             updateProp += " color_mode";
                             switch (prop.getValue().getAsInt()) {
@@ -336,7 +337,7 @@ public abstract class DeviceBase {
         mConnection.invoke(MethodFactory.buildBrightnessMethd(bg_brightness, DeviceMethod.EFFECT_SMOOTH, duration));
     }
 
-    public void setBgolor(int bg_color, int duration) {
+    public void setBg_Color(int bg_color, int duration) {
         mConnection.invoke(MethodFactory.buildRgbMethod(bg_color, DeviceMethod.EFFECT_SMOOTH, duration));
     }
 
@@ -356,9 +357,30 @@ public abstract class DeviceBase {
         setCT(ct, duration);
     }
 
+    public void increaseBg_Ct(int duration) {
+        int ct = getDeviceStatus().getBg_Ct() - ((mMaxCt - mMinCt) / 10);
+        if (ct < mMinCt) {
+            ct = mMinCt;
+        }
+        setBg_CT(ct, duration);
+    }
+
+    public void decreaseBg_Ct(int duration) {
+        int ct = getDeviceStatus().getBg_Ct() + ((mMaxCt - mMinCt) / 10);
+        if (ct > mMaxCt) {
+            ct = mMaxCt;
+        }
+        setBg_CT(ct, duration);
+    }
+
     public void setCT(int ct, int duration) {
         mConnection.invoke(MethodFactory.buildCTMethod(ct, DeviceMethod.EFFECT_SMOOTH, duration));
     }
+
+    public void setBg_CT(int bg_ct, int duration) {
+        mConnection.invoke(MethodFactory.buildCTMethod(bg_ct, DeviceMethod.EFFECT_SMOOTH, duration));
+    }
+
 
     public void connect() {
         setConnectionState(ConnectState.CONNECTTING);

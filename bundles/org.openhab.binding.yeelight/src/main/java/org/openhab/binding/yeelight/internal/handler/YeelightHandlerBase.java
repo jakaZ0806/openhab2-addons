@@ -186,9 +186,9 @@ public abstract class YeelightHandlerBase extends BaseThingHandler
                 if (command instanceof PercentType) {
                     handleBgPercentMessage((PercentType) command);
                 } else if (command instanceof OnOffType) {
-                    handleBgOnOffCommand((OnOffType) command);
+                    handleOnOffCommand((OnOffType) command);
                 } else if (command instanceof IncreaseDecreaseType) {
-                    handleIncreaseDecreaseBg_BrightnessCommand((IncreaseDecreaseType) command);
+                    handleIncreaseDecreaseBrightnessCommand((IncreaseDecreaseType) command);
                 }
                 break;
             case CHANNEL_COLOR:
@@ -359,7 +359,7 @@ public abstract class YeelightHandlerBase extends BaseThingHandler
 
         HSBType tempHsbType = HSBType.fromRGB(status.getBg_R(), status.getBg_G(), status.getBg_B());
         HSBType hsbType = status.getBg_Mode() == DeviceMode.MODE_HSV
-                ? new HSBType(new DecimalType(status.getBg_Hue()), new PercentType(status.getBgSat()), brightness)
+                ? new HSBType(new DecimalType(status.getBg_Hue()), new PercentType(status.getBg_Sat()), brightness)
                 : new HSBType(tempHsbType.getHue(), tempHsbType.getSaturation(), brightness);
 
         logger.debug("Update Color->{}", hsbType);
