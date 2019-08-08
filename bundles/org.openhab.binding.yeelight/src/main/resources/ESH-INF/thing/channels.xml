@@ -17,6 +17,19 @@
 		</tags>
 	</channel-type>
 
+		<!-- Background Brightness Channel -->
+	<channel-type id="bg_brightness">
+		<item-type>Dimmer</item-type>
+		<label>Ambilight Brightness</label>
+		<description>The brightness channel allows to control the brightness of a light.
+			It is also possible to switch the light on and off.
+		</description>
+		<category>DimmableLight</category>
+		<tags>
+			<tag>Lighting</tag>
+		</tags>
+	</channel-type>
+
 	<!-- Color Channel -->
 	<channel-type id="color">
 		<item-type>Color</item-type>
@@ -28,10 +41,32 @@
 		</tags>
 	</channel-type>
 
+	<!-- Background Color Channel -->
+	<channel-type id="bg_color">
+		<item-type>Color</item-type>
+		<label>Ambilight Color</label>
+		<description>The color channel allows to control the color of a light.</description>
+		<category>ColorLight</category>
+		<tags>
+			<tag>Lighting</tag>
+		</tags>
+	</channel-type>
+
 	<!-- Color Temperature Channel -->
 	<channel-type id="colorTemperature">
 		<item-type>Dimmer</item-type>
 		<label>ColorTemperature</label>
+		<description>The CT channel allows to control the CT of a light.</description>
+		<category>DimmableCT</category>
+		<tags>
+			<tag>ColorTemperature</tag>
+		</tags>
+	</channel-type>
+
+	<!-- Background Color Temperature Channel -->
+	<channel-type id="bg_colorTemperature">
+		<item-type>Dimmer</item-type>
+		<label>Ambilight ColorTemperature</label>
 		<description>The CT channel allows to control the CT of a light.</description>
 		<category>DimmableCT</category>
 		<tags>

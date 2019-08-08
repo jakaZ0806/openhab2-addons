@@ -184,11 +184,11 @@ public abstract class YeelightHandlerBase extends BaseThingHandler
                 break;
             case CHANNEL_BG_BRIGHTNESS:
                 if (command instanceof PercentType) {
-                    handleBgPercentMessage((PercentType) command);
+                    handleBg_PercentMessage((PercentType) command);
                 } else if (command instanceof OnOffType) {
-                    handleOnOffCommand((OnOffType) command);
+                    handleBg_OnOffCommand((OnOffType) command);
                 } else if (command instanceof IncreaseDecreaseType) {
-                    handleIncreaseDecreaseBrightnessCommand((IncreaseDecreaseType) command);
+                    handleIncreaseDecreaseBg_BrightnessCommand((IncreaseDecreaseType) command);
                 }
                 break;
             case CHANNEL_COLOR:
@@ -211,16 +211,16 @@ public abstract class YeelightHandlerBase extends BaseThingHandler
                 if (command instanceof HSBType) {
                     HSBType hsbCommand = (HSBType) command;
                     if (hsbCommand.getBrightness().intValue() == 0) {
-                        handleOnOffCommand(OnOffType.OFF);
+                        handleBg_OnOffCommand(OnOffType.OFF);
                     } else {
-                        handleHSBCommand(hsbCommand);
+                        handleBg_HSBCommand(hsbCommand);
                     }
                 } else if (command instanceof PercentType) {
-                    handlePercentMessage((PercentType) command);
+                    handleBg_PercentMessage((PercentType) command);
                 } else if (command instanceof OnOffType) {
-                    handleOnOffCommand((OnOffType) command);
+                    handleBg_OnOffCommand((OnOffType) command);
                 } else if (command instanceof IncreaseDecreaseType) {
-                    handleIncreaseDecreaseBrightnessCommand((IncreaseDecreaseType) command);
+                    handleIncreaseDecreaseBg_BrightnessCommand((IncreaseDecreaseType) command);
                 }
                 break;
             case CHANNEL_COLOR_TEMPERATURE:
@@ -232,9 +232,9 @@ public abstract class YeelightHandlerBase extends BaseThingHandler
                 break;
             case CHANNEL_BG_COLOR_TEMPERATURE:
                 if (command instanceof PercentType) {
-                    handleColorTemperatureCommand((PercentType) command);
+                    handleBg_ColorTemperatureCommand((PercentType) command);
                 } else if (command instanceof IncreaseDecreaseType) {
-                    handleIncreaseDecreaseBrightnessCommand((IncreaseDecreaseType) command);
+                    handleIncreaseDecreaseBg_BrightnessCommand((IncreaseDecreaseType) command);
                 }
                 break;
             case CHANNEL_COMMAND:
@@ -274,7 +274,7 @@ public abstract class YeelightHandlerBase extends BaseThingHandler
         }
     }
 
-    void handleBgPercentMessage(PercentType brightness) {
+    void handleBg_PercentMessage (PercentType brightness) {
         DeviceAction pAction;
         if (brightness.intValue() == 0) {
             pAction = DeviceAction.close;
@@ -282,12 +282,12 @@ public abstract class YeelightHandlerBase extends BaseThingHandler
             DeviceManager.getInstance().doAction(deviceId, pAction);
         } else {
             if (mDevice.getDeviceStatus().bg_isPowerOff()) {
-                pAction = DeviceAction.open;
+                pAction = DeviceAction.bg_open;
                 // hard coded to fast open, the duration should apply to brightness increase only
                 pAction.putDuration(0);
                 DeviceManager.getInstance().doAction(deviceId, pAction);
             }
-            pAction = DeviceAction.brightness;
+            pAction = DeviceAction.bg_brightness;
             pAction.putValue(brightness.intValue());
             pAction.putDuration(getDuration());
             DeviceManager.getInstance().doAction(deviceId, pAction);
@@ -301,6 +301,13 @@ public abstract class YeelightHandlerBase extends BaseThingHandler
         DeviceManager.getInstance().doAction(deviceId, idbAcation);
     }
 
+    void handleIncreaseDecreaseBg_BrightnessCommand(IncreaseDecreaseType increaseDecrease) {
+        DeviceAction idbAcation = increaseDecrease == IncreaseDecreaseType.INCREASE ? DeviceAction.increase_bg_bright
+                : DeviceAction.decrease_bg_bright;
+        idbAcation.putDuration(getDuration());
+        DeviceManager.getInstance().doAction(deviceId, idbAcation);
+    }
+
     void handleIncreaseDecreaseColorTemperatureCommand(IncreaseDecreaseType increaseDecrease) {
         DeviceAction idctAcation = increaseDecrease == IncreaseDecreaseType.INCREASE ? DeviceAction.increase_ct
                 : DeviceAction.decrease_ct;
@@ -308,8 +315,21 @@ public abstract class YeelightHandlerBase extends BaseThingHandler
         DeviceManager.getInstance().doAction(deviceId, idctAcation);
     }
 
+    void handleIncreaseDecreaseBg_ColorTemperatureCommand(IncreaseDecreaseType increaseDecrease) {
+        DeviceAction idctAcation = increaseDecrease == IncreaseDecreaseType.INCREASE ? DeviceAction.increase_bg_ct
+                : DeviceAction.decrease_bg_ct;
+        idctAcation.putDuration(getDuration());
+        DeviceManager.getInstance().doAction(deviceId, idctAcation);
+    }
+
     void handleOnOffCommand(OnOffType onoff) {
         DeviceAction ofAction = onoff == OnOffType.ON ? DeviceAction.open : DeviceAction.close;
+        ofAction.putDuration(getDuration());
+        DeviceManager.getInstance().doAction(deviceId, ofAction);
+    }
+
+    void handleBg_OnOffCommand(OnOffType onoff) {
+        DeviceAction ofAction = onoff == OnOffType.ON ? DeviceAction.bg_open : DeviceAction.bg_close;
         ofAction.putDuration(getDuration());
         DeviceManager.getInstance().doAction(deviceId, ofAction);
     }
@@ -321,8 +341,22 @@ public abstract class YeelightHandlerBase extends BaseThingHandler
         DeviceManager.getInstance().doAction(deviceId, cAction);
     }
 
+    void handleBg_HSBCommand(HSBType color) {
+        DeviceAction cAction = DeviceAction.bg_color;
+        cAction.putValue(color.getRGB() & 0xFFFFFF);
+        cAction.putDuration(getDuration());
+        DeviceManager.getInstance().doAction(deviceId, cAction);
+    }
+
     void handleColorTemperatureCommand(PercentType ct) {
         DeviceAction ctAction = DeviceAction.colortemperature;
+        ctAction.putValue(COLOR_TEMPERATURE_STEP * ct.intValue() + COLOR_TEMPERATURE_MINIMUM);
+        ctAction.putDuration(getDuration());
+        DeviceManager.getInstance().doAction(deviceId, ctAction);
+    }
+
+    void handleBg_ColorTemperatureCommand(PercentType ct) {
+        DeviceAction ctAction = DeviceAction.bg_colortemperature;
         ctAction.putValue(COLOR_TEMPERATURE_STEP * ct.intValue() + COLOR_TEMPERATURE_MINIMUM);
         ctAction.putDuration(getDuration());
         DeviceManager.getInstance().doAction(deviceId, ctAction);

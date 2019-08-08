@@ -133,11 +133,11 @@ public class DeviceStatus {
     }
 
     public int getBg_Sat() {
-        return sat;
+        return bg_sat;
     }
 
-    public void setBg_Sat(int sat) {
-        this.sat = sat;
+    public void setBg_Sat(int bg_sat) {
+        this.bg_sat = bg_sat;
     }
 
     public int getBg_Color() {

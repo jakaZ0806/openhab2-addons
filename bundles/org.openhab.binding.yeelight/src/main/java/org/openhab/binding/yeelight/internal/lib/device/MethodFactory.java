@@ -39,7 +39,7 @@ public class MethodFactory {
         return new DeviceMethod(MethodAction.COLORTEMPERATURE, new Object[] { colorTemperature, effect, duration });
     }
 
-    public static DeviceMethod buildBgCTMethod(int bg_colorTemperature, String effect, int duration) {
+    public static DeviceMethod buildBg_CTMethod(int bg_colorTemperature, String effect, int duration) {
         return new DeviceMethod(MethodAction.BG_COLORTEMPERATURE, new Object[] { bg_colorTemperature, effect, duration });
     }
 

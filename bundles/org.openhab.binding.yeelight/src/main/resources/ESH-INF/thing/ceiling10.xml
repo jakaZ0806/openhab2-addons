@@ -10,12 +10,11 @@
 		<channels>
 			<channel id="brightness" typeId="brightness" />
 			<channel id="colorTemperature" typeId="colorTemperature" />
-			<channel id="bg_brightness" typeId="brightness" />
-			<channel id="bg_color" typeId="color" />
-			<channel id="bg_colorTemperature" typeId="colorTemperature" />
+			<channel id="bg_brightness" typeId="bg_brightness" />
+			<channel id="bg_color" typeId="bg_color" />
+			<channel id="bg_colorTemperature" typeId="bg_colorTemperature" />
 			<channel id="command" typeId="command" />
-			</channels>
-
-			<config-description-ref uri="thing-type:device:base" />
+		</channels>
+		<config-description-ref uri="thing-type:device:base" />
 		</thing-type>
 	</thing:thing-descriptions>

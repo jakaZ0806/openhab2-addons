@@ -33,8 +33,8 @@ public class MeteoriteDevice extends DeviceBase {
         super(id);
         mDeviceType = DeviceType.ceiling10;
         mConnection = new WifiConnection(this);
-        mMinCt = 1700;
-        mMaxCt = 6500;
+        mMinCt = 2700;
+        mMaxCt = 6700;
     }
 
     @Override

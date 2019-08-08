@@ -334,11 +334,11 @@ public abstract class DeviceBase {
     }
 
     public void setBg_Brightness(int bg_brightness, int duration) {
-        mConnection.invoke(MethodFactory.buildBrightnessMethd(bg_brightness, DeviceMethod.EFFECT_SMOOTH, duration));
+        mConnection.invoke(MethodFactory.buildBg_BrightnessMethd(bg_brightness, DeviceMethod.EFFECT_SMOOTH, duration));
     }
 
     public void setBg_Color(int bg_color, int duration) {
-        mConnection.invoke(MethodFactory.buildRgbMethod(bg_color, DeviceMethod.EFFECT_SMOOTH, duration));
+        mConnection.invoke(MethodFactory.buildBg_RgbMethod(bg_color, DeviceMethod.EFFECT_SMOOTH, duration));
     }
 
     public void increaseCt(int duration) {
@@ -378,7 +378,7 @@ public abstract class DeviceBase {
     }
 
     public void setBg_CT(int bg_ct, int duration) {
-        mConnection.invoke(MethodFactory.buildCTMethod(bg_ct, DeviceMethod.EFFECT_SMOOTH, duration));
+        mConnection.invoke(MethodFactory.buildBg_CTMethod(bg_ct, DeviceMethod.EFFECT_SMOOTH, duration));
     }
 
 
